@@ -125,7 +125,7 @@ body {
   }
 
   .bento-tilt_2 {
-    @apply relative col-span-1 row-span-1 overflow-hidden rounded-md transition-transform duration-300 ease-out;
+    @apply relative col-span-1 md:col-span-2 row-span-1 overflow-hidden rounded-md transition-transform duration-300 ease-out;
   }
 
   .bento-title {
@@ -133,7 +133,7 @@ body {
   }
 
   .story-img-container {
-    @apply relative md:h-dvh h-[90vh] w-full;
+    @apply relative md:h-dvh h-[80vh] w-full;
     filter: url("#flt_tag");
   }
 
