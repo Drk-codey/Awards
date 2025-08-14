@@ -11,12 +11,24 @@ const Navbar = () => {
   const [isIndicatorActive, setIsIndicatorActive] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isNavVisible, setIsNavVisible] = useState(true);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false); // New state for mobile nav
 
   const navContainerRef = useRef(null);
   const audioElementRef = useRef(null);
 
-  const { y: currentScrollY } = useWindowScroll();
+  
+  // Toggle mobile navigation
+  const toggleMobileNav = () => {
+    setIsMobileNavOpen(prev => !prev);
+  };
 
+  // Close mobile nav when link is clicked
+  const closeMobileNav = () => {
+    setIsMobileNavOpen(false);
+  };
+    
+  const { y: currentScrollY } = useWindowScroll();
+    
   useEffect(() => {
     if (currentScrollY === 0) {
       setIsNavVisible(true);
@@ -56,6 +68,7 @@ const Navbar = () => {
   }, [isAudioPlaying])
 
   return (
+    <>
     <div ref={navContainerRef} className="fixed inset-x-0 top-4 z-50 h-16 border-none transition-all duration-700 sm:inset-x-6">
       <header className='absolute top-1/2 w-full -translate-y-1/2'>
         <nav className="flex size-full items-center justify-between px-4">
@@ -85,10 +98,50 @@ const Navbar = () => {
                   <div key={bar} className={`border indicator-line ${isIndicatorActive ? 'active' : ''}`} style={{ animationDelay: `${bar * 0.1 }s`  }} />
                 ))}
             </button>
+
+            <button className='ml-6 flex flex-col align-middle items-center gap-0.5 sm:hidden' onClick={toggleMobileNav }>
+                {[1, 2, 3].map((bar) => (
+                  <div key={bar} className={`navbar-button`} />
+                ))}
+            </button>
           </div>
         </nav>
       </header>
+
+
+      
     </div>
+
+    {/* Mobile Navbar Navigation Menu */}
+    <nav className={`fixed top-0 right-0 z-50 h-dvh w-full bg-white transition-transform duration-300 ease-in-out transform ${
+        isMobileNavOpen ? 'translate-x-0' : 'translate-x-full'
+      } sm:hidden`}>
+
+      <div className="flex justify-end p-5">
+          <button 
+            onClick={closeMobileNav}
+            className="text-3xl font-bold text-black focus:outline-none"
+            aria-expanded={isMobileNavOpen}
+            aria-label="Close menu"
+          >
+            &times;
+          </button>
+        </div>
+
+        <div className='w-full h-[85%] flex flex-col items-center justify-between gap-2 p-10'>
+          {navItems.map((item) => (
+            <a 
+              key={item} 
+              href={`#${item.toLowerCase()}`} 
+              className='nav-hover-btn text-2xl! font-medium text-black! hover:text-blue-600 transition-colors'
+              onClick={closeMobileNav}
+            >
+              {item}
+            </a>            
+          ))}
+        </div>
+      </nav>
+    </>
   )
 }
  
